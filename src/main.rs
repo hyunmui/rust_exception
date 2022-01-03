@@ -1,6 +1,6 @@
-use std::{fs::{File, self}, vec, io::{self, Read}};
+use std::{fs::{File, self}, vec, io::{self, Read}, error::Error};
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     // panic!("crash and burn!");
 
     // OutOfRange
@@ -31,6 +31,9 @@ fn main() {
         Ok(value) => println!("{}", value),
         Err(error) => panic!("Failed to read file: {:?}", error),
     };
+
+    let f = File::open("hello.txt")?;        // raise error with ? operator but main function has return type, you can write this.
+    Ok(())
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
