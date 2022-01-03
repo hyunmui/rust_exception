@@ -1,4 +1,4 @@
-use std::{fs::File, vec, io::{self, Read}};
+use std::{fs::{File, self}, vec, io::{self, Read}};
 
 fn main() {
     // panic!("crash and burn!");
@@ -27,10 +27,12 @@ fn main() {
     // 파일 에러 처리 with except
     // let f = File::open("hello.txt").expect("Failed to open a file");
     let tmp = read_username_from_file();
+    match tmp {
+        Ok(value) => println!("{}", value),
+        Err(error) => panic!("Failed to read file: {:?}", error),
+    };
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
-    let mut s = String::new();
-    File::open("hello.txt")?.read_to_string(&mut s)?;
-    Ok(s)
+    fs::read_to_string("hello.txt")
 }
