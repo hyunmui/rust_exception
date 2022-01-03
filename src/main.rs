@@ -10,8 +10,12 @@ fn main() {
 
     let f = match f {
         Ok(file) => file,
-        Err(error) => {
-            panic!("Failed to open file: {:?}", error);
+        Err(ref error) => match error.kind() {
+            std::io::ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Failed to create a file: {:?}", e),
+            },
+            other_error => panic!("Failed to open a file: {:?}", other_error),
         }
     };
 }
